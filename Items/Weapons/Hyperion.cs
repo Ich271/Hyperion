@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
-using System.Threading;
 
 namespace Hyperion.Items.Weapons
 {
@@ -55,7 +54,7 @@ namespace Hyperion.Items.Weapons
 		public override void OnConsumeMana(Player player, int manaConsumed)
 		{
 
-			Item.damage = (int)(Main.LocalPlayer.statManaMax2 * 6.9);
+			Item.damage = Main.LocalPlayer.statManaMax * 9;
 			
 			Vector2 playerLoc = Main.LocalPlayer.position;
 			Vector2 curserWorld = Main.MouseWorld;
@@ -66,7 +65,7 @@ namespace Hyperion.Items.Weapons
 
 
 
-			for (int i = 0; i < 401; i++)
+			for (int i = 0; i < 501; i++)
 			{
 
 				float nextLocY = sin * i;
@@ -78,14 +77,15 @@ namespace Hyperion.Items.Weapons
 				if (!Main.tile[nextLocWorld.ToTileCoordinates().X, nextLocWorld.ToTileCoordinates().Y].IsActive) player.position = noBlockTeleport; else break;
 			}
 			
-			if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()))
+			if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()) && player.statLife != player.statLifeMax2)
 			{
 				player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
 				player.statLife += player.statDefense * 4;
 				player.HealEffect(player.statDefense * 4, true);
+				
 			}
 		}
-        
+
 
 
         public override void AddRecipes()
