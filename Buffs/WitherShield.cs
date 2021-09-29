@@ -18,7 +18,7 @@ namespace Hyperion.Buffs
 		public override void Update(Player player, ref int buffIndex)
 		{
 
-           player.endurance += (float)(0.1);
+           player.endurance += (float)(0.33);
 			
 		}
 
