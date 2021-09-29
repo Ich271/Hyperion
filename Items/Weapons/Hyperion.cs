@@ -54,7 +54,7 @@ namespace Hyperion.Items.Weapons
 		public override void OnConsumeMana(Player player, int manaConsumed)
 		{
 
-			Item.damage = Main.LocalPlayer.statManaMax * 9;
+			Item.damage = Main.LocalPlayer.statManaMax2 * 9;
 			
 			Vector2 playerLoc = Main.LocalPlayer.position;
 			Vector2 curserWorld = Main.MouseWorld;
