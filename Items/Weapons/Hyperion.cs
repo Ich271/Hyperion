@@ -29,7 +29,7 @@ namespace Hyperion.Items.Weapons
 		{
 			Item.CloneDefaults(ItemID.TerraBlade);
 			Item.sellPrice(20, 0, 0, 0);
-			Item.damage = 3000;
+			Item.damage = 1000;
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 1;
 			Item.width = 32;
@@ -37,14 +37,14 @@ namespace Hyperion.Items.Weapons
 			Item.useTime = 1;
 			Item.noMelee = false; 
 			Item.knockBack = 0;
-			Item.crit = 20;
+			Item.crit = 30;
 			Item.value = 1000000;
 			Item.rare = ItemRarityID.Gray;
-			Item.UseSound = SoundID.Item20;
-			Item.shoot = ProjectileID.None;
-			Item.autoReuse = false;
+            Item.shoot = ProjectileID.None;
+			Item.autoReuse = true;
+			Item.UseSound = SoundID.Item1;
 			
-			Item.UseSound = Mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/WitherImpactSound");
+			
 			
 
 			
@@ -62,8 +62,12 @@ namespace Hyperion.Items.Weapons
 			{
 				Item.damage = Main.LocalPlayer.statManaMax2 * 9;
 				Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
-				Item.mana = 200;
 				Item.shootSpeed = 0f;
+				Item.crit = -1000;
+				Item.autoReuse = false;
+				Terraria.Audio.SoundEngine.PlaySound(Mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/explode"), Main.LocalPlayer.position);
+				Main.LocalPlayer.statMana -= 200;
+
 
 				Vector2 playerLoc = Main.LocalPlayer.position;
 				Vector2 curserWorld = Main.MouseWorld;
@@ -91,14 +95,23 @@ namespace Hyperion.Items.Weapons
 					player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
 					player.statLife += player.statDefense * 4;
 					player.HealEffect(player.statDefense * 4, true);
+					Terraria.Audio.SoundEngine.PlaySound(Mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/WitherImpactSound"), Main.LocalPlayer.position);
 
 				}
 			}
 			else
 				Item.shoot = ProjectileID.None;
 				Item.mana = 1;
+				Item.crit = 30;
+				Item.UseSound = SoundID.Item1;
+				Item.autoReuse = true;
+
 
 		}
+        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        {
+			crit = false;
+        }
 
 
 

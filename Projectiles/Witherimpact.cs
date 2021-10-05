@@ -19,6 +19,7 @@ namespace Hyperion.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
 			
+			
 
 			
 		}
@@ -26,11 +27,7 @@ namespace Hyperion.Projectiles
 
 
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-			
-            base.OnHitNPC(target, damage, knockback, false);
-        }
+        
 
     }
 }
