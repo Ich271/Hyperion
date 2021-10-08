@@ -13,8 +13,8 @@ namespace Hyperion.Projectiles
 			Projectile.height = 500;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
-			Projectile.penetrate = 1000;
-			Projectile.timeLeft = 2;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 5;
 			Projectile.aiStyle = 1;
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
@@ -24,10 +24,14 @@ namespace Hyperion.Projectiles
 			
 		}
 
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			
+			target.immune[Projectile.owner] = 5;
+		}
 
 
 
-        
 
-    }
+	}
 }

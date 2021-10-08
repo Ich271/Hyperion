@@ -27,9 +27,10 @@ namespace Hyperion.Items.Weapons
 
         public override void SetDefaults()
 		{
-			Item.CloneDefaults(ItemID.TerraBlade);
+			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.shootSpeed = 0;
 			Item.sellPrice(20, 0, 0, 0);
-			Item.damage = 1000;
+			Item.damage = 500;
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 1;
 			Item.width = 32;
@@ -37,17 +38,12 @@ namespace Hyperion.Items.Weapons
 			Item.useTime = 1;
 			Item.noMelee = false; 
 			Item.knockBack = 0;
-			Item.crit = 30;
-			Item.value = 1000000;
+			Item.crit = 69420;
 			Item.rare = ItemRarityID.Gray;
             Item.shoot = ProjectileID.None;
-			Item.autoReuse = true;
+			Item.autoReuse = false;
 			Item.UseSound = SoundID.Item1;
-			
-			
-			
-
-			
+			Item.useAnimation = 1;
 		}
 
 
@@ -60,14 +56,16 @@ namespace Hyperion.Items.Weapons
 		{
 			if (player.altFunctionUse == 2)
 			{
-				Item.damage = Main.LocalPlayer.statManaMax2 * 9;
+
+				// Stats for rightclick ability ----------------------------------------------------------------------------------------------------------
+				Item.damage = Main.LocalPlayer.statManaMax2 * 4;
 				Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
 				Item.shootSpeed = 0f;
-				Item.crit = -1000;
 				Item.autoReuse = false;
 				Terraria.Audio.SoundEngine.PlaySound(Mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/explode"), Main.LocalPlayer.position);
 				Main.LocalPlayer.statMana -= 200;
 
+				// setting up teleportation --------------------------------------------------------------------------------------------------------------
 
 				Vector2 playerLoc = Main.LocalPlayer.position;
 				Vector2 curserWorld = Main.MouseWorld;
@@ -76,7 +74,7 @@ namespace Hyperion.Items.Weapons
 				float sin = (float)(CurserPlayer.Y / mouseHypotenuse);
 				float cos = (float)(CurserPlayer.X / mouseHypotenuse);
 
-
+				// checking for valid block and telportation ---------------------------------------------------------------------------------------------
 
 				for (int i = 0; i < 501; i++)
 				{
@@ -90,6 +88,8 @@ namespace Hyperion.Items.Weapons
 					if (!Main.tile[nextLocWorld.ToTileCoordinates().X, nextLocWorld.ToTileCoordinates().Y].IsActive) player.position = noBlockTeleport; else break;
 				}
 
+				// wither shield ability -----------------------------------------------------------------------------------------------------------------
+
 				if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()) && player.statLife != player.statLifeMax2)
 				{
 					player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
@@ -102,18 +102,12 @@ namespace Hyperion.Items.Weapons
 			else
 				Item.shoot = ProjectileID.None;
 				Item.mana = 1;
-				Item.crit = 30;
 				Item.UseSound = SoundID.Item1;
 				Item.autoReuse = true;
 
 
 		}
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
-        {
-			crit = false;
-        }
-
-
+  
 
         public override void AddRecipes()
 		{
