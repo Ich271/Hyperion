@@ -67,6 +67,12 @@ namespace Hyperion.Items.Weapons
 
 				// setting up teleportation --------------------------------------------------------------------------------------------------------------
 
+				
+
+
+
+				// Explosion Animation -------------------------------------------------------------------------------------------------------------------
+
 				Vector2 playerLoc = Main.LocalPlayer.position;
 				Vector2 curserWorld = Main.MouseWorld;
 				Vector2 CurserPlayer = playerLoc - curserWorld;
@@ -76,17 +82,68 @@ namespace Hyperion.Items.Weapons
 
 				// checking for valid block and telportation ---------------------------------------------------------------------------------------------
 
+				Vector2 nextLocWorld;
+
 				for (int i = 0; i < 501; i++)
 				{
-
+					Vector2 projvel = new(0, 0);
 					float nextLocY = sin * i;
 					float nextLocX = cos * i;
 					Vector2 nextLocVector = new(nextLocX, nextLocY);
-					Vector2 nextLocWorld = playerLoc - nextLocVector;
+					nextLocWorld = playerLoc - nextLocVector;
 					Vector2 noBlockTeleport = new(nextLocWorld.X - 30, nextLocWorld.Y - 30);
 
-					if (!Main.tile[nextLocWorld.ToTileCoordinates().X, nextLocWorld.ToTileCoordinates().Y].IsActive) player.position = noBlockTeleport; else break;
+					if (!Main.tile[nextLocWorld.ToTileCoordinates().X, nextLocWorld.ToTileCoordinates().Y].IsActive) player.position = noBlockTeleport; 
+						else
+                    {
+						Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._4>(), 0, 0);
+						break;
+					}
+					
+
+					
+
+					switch (i) {
+
+                        case 0: 
+							Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._1>(), 0, 0);
+							break;
+
+						 case 100:
+							Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._2>(), 0, 0);
+							break;
+						
+						case 200:
+							Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._3>(), 0, 0);
+							break;
+
+						case 300:
+							Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._4>(), 0, 0);
+							break;
+
+						case 400:
+							Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, projvel, ModContent.ProjectileType<Projectiles._5>(), 0, 0);
+							break;
+							/*
+							case 90:
+								Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, nextLocWorld, ModContent.ProjectileType<Projectiles.Witherimpact>(), player.statManaMax2 * 4, 0);
+								break;
+
+							case 120:
+								Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, nextLocWorld, ModContent.ProjectileType<Projectiles.Witherimpact>(), player.statManaMax2 * 4, 0);
+								break;
+
+							case 150:
+								Projectile.NewProjectile(player.GetProjectileSource_Item(Item), Main.LocalPlayer.position, nextLocWorld, ModContent.ProjectileType<Projectiles.Witherimpact>(), player.statManaMax2 * 4, 0);
+								break; */
+					}
+
+					
 				}
+
+				// -----------------------------------------
+
+				
 
 				// wither shield ability -----------------------------------------------------------------------------------------------------------------
 
