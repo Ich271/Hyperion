@@ -9,8 +9,8 @@ namespace Hyperion.Projectiles
 	{
 		public override void SetDefaults()
 		{
-			Projectile.width = 500;
-			Projectile.height = 500;
+			Projectile.width = 520;
+			Projectile.height = 520;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.penetrate = 1000;
