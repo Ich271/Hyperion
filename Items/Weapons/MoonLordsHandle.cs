@@ -40,7 +40,7 @@ namespace Hyperion.Items.Weapons
 
             if (npc.type == NPCID.MoonLordCore)
             {
-                 npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MoonLordsHandle>(), 100));
+                 npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<MoonLordsHandle>()));
             }
         }
 
