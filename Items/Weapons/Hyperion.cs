@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -57,47 +57,39 @@ namespace Hyperion.Items.Weapons
         {
 
 
-			if (player.altFunctionUse != 2)	return false;
+			if (player.altFunctionUse != 2) return false;
 			else
 			{
-				
-
 				SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/explode"));
 
 
-				Vector2 playerLoc = player.Center;
+				Vector2 playerLoc = player.position;
 				Vector2 curserWorld = Main.MouseWorld;
-				Vector2 CurserPlayer = playerLoc - curserWorld;
-				double mouseHypotenuse = Math.Sqrt((CurserPlayer.X * CurserPlayer.X) + (CurserPlayer.Y * CurserPlayer.Y));
-				float sin = (float)(CurserPlayer.Y / mouseHypotenuse);
-				float cos = (float)(CurserPlayer.X / mouseHypotenuse);
+				Vector2 PlayerToCurser = curserWorld - playerLoc;
+				Vector2 direction = PlayerToCurser.SafeNormalize(Vector2.UnitX);
 
-				for (int i = 0; i < 16; i++)
+				for (int i = 0; i < 30; i++)
 				{
-					float nextLocY = sin * i;
-					float nextLocX = cos * i;
-					Point nextLocVector = new((int)Math.Round(nextLocX - 1, 0), (int)Math.Round(nextLocY - 1, 0));
-					Point nextLocWorld = playerLoc.ToTileCoordinates() - nextLocVector;
+					Vector2 distance = new(i, i + 1);
+					Point nextLocation = playerLoc.ToTileCoordinates() + (PlayerToCurser.ToTileCoordinates() * distance.ToTileCoordinates());
 
-					if (!Main.tile[nextLocWorld.X + 1, nextLocWorld.Y + 1].IsActive) player.position = nextLocWorld.ToWorldCoordinates();
+					if (!Main.tile[nextLocation.X, nextLocation.Y].IsActive) player.position = nextLocation.ToWorldCoordinates();
 					else break;
 				}
 
 
-				if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()) && player.statLife != player.statLifeMax2)
-				{
-						player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
-						player.statLife += player.statDefense * 4;
-						player.HealEffect(player.statDefense * 4, true);
-						SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/WitherImpactSound"));				
-				}
 
-				
-				
+
+
+				if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()) && player.statLife != player.statLifeMax2 && player.altFunctionUse == 2)
+				{
+					player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
+					player.statLife += player.statDefense * 4;
+					player.HealEffect(player.statDefense * 4, true);
+					SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/WitherImpactSound"));
+				}
 				return true;
 			}
-
-
 		}
   
 

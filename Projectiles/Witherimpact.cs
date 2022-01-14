@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using System;
 
 namespace Hyperion.Projectiles
 {
@@ -56,7 +57,7 @@ namespace Hyperion.Projectiles
         public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
 			Player player = Main.player[Projectile.owner];
-			damage = player.statManaMax2 * 2;
+			damage = (int) Math.Round(player.statManaMax2 * 2.5);
             crit = false;
         }
 
