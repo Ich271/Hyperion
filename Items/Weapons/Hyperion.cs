@@ -68,12 +68,12 @@ namespace Hyperion.Items.Weapons
 				Vector2 PlayerToCurser = curserWorld - playerLoc;
 				Vector2 direction = PlayerToCurser.SafeNormalize(Vector2.UnitX);
 
-				for (int i = 0; i < 30; i++)
+				for (int i = 0; i < 350; i++)
 				{
 					Vector2 distance = new(i, i + 1);
-					Point nextLocation = playerLoc.ToTileCoordinates() + (PlayerToCurser.ToTileCoordinates() * distance.ToTileCoordinates());
+					Vector2 nextLocation = playerLoc + (direction * distance);
 
-					if (!Main.tile[nextLocation.X, nextLocation.Y].IsActive) player.position = nextLocation.ToWorldCoordinates();
+					if (!Collision.SolidCollision(nextLocation, player.width, player.height)) player.position = nextLocation;
 					else break;
 				}
 
@@ -87,6 +87,12 @@ namespace Hyperion.Items.Weapons
 					player.statLife += player.statDefense * 4;
 					player.HealEffect(player.statDefense * 4, true);
 					SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/WitherImpactSound"));
+					for (int i = 0; i < 50; i++)
+					{
+						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+						Dust d = Dust.NewDustPerfect(Main.LocalPlayer.Top, DustID.PurpleCrystalShard, speed * 5, Scale: 1.5f);
+						d.noGravity = true;
+					}
 				}
 				return true;
 			}
