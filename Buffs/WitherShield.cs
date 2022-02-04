@@ -6,7 +6,7 @@ namespace Hyperion.Buffs
 {
     class WitherShield : ModBuff
     {
-
+		private int Shield;
 
 		public override void SetStaticDefaults()
 		{
@@ -14,7 +14,7 @@ namespace Hyperion.Buffs
 			Description.SetDefault("Healing ability is on cooldown. Grands 10% damage reduction"); 
 			Main.buffNoSave[Type] = true; 
 		}
-
+		 
 		public override void Update(Player player, ref int buffIndex)
 		{
 
@@ -26,7 +26,4 @@ namespace Hyperion.Buffs
 	}
 
 	
-
-
-
 }

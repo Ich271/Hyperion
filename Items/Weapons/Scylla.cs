@@ -1,4 +1,4 @@
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -9,69 +9,69 @@ using Terraria.GameContent.Creative;
 
 namespace Hyperion.Items.Weapons
 {
-	
-	public class Hyperion : ModItem
+
+	public class Scylla : ModItem
 
 	{
 
 		public override string Texture => "Hyperion/Items/Weapons/WitherBlade";
-
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("Item Ability: Wither Impact RIGHT CLICK \n" +
 				"Teleports 30 tiles ahead of you.Then implode dealing damage based on your total mana to nearby enemies.\n"
-				 +"Also applies the wither shield scroll ability reducing damage taken and granting an Absorption shield for 5 seconds.\n"
-				  +"Mana cost: 190");
+				 + "Also applies the wither shield scroll ability reducing damage taken and granting an Absorption shield for 5 seconds.\n"
+				  + "Mana cost: 190");
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 		}
 
-        public override void HoldItem(Player player)
-        {
-			player.statManaMax2 += 200;
+		public override void HoldItem(Player player)
+		{
+			player.statManaMax2 += 20;
 			
+
 		}
 
-        
 
 
-        public override void SetDefaults()
+
+		public override void SetDefaults()
 		{
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.shootSpeed = 0;
 			Item.sellPrice(20, 0, 0, 0);
-			Item.damage = 150;
+			Item.damage = 200;
 			Item.DamageType = DamageClass.Melee;
 			Item.mana = 1;
 			Item.width = 32;
 			Item.height = 32;
-			Item.useTime = 5;
-			Item.noMelee = false; 
+			Item.useTime = 3;
+			Item.noMelee = false;
 			Item.knockBack = 0;
-			Item.crit = 50;
+			Item.crit = 80;
 			Item.rare = ItemRarityID.Gray;
-            Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
+			Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
 			Item.autoReuse = false;
-			Item.useAnimation = 5;
+			Item.useAnimation = 3;
 		}
-
-      
-
-        public override bool AltFunctionUse(Player player) { return true; }
-
 
 		public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
 		{
 			if (player.altFunctionUse == 2) mult += 190;
-
+			
 		}
+
+		public override bool AltFunctionUse(Player player) { return true; }
+
+
+
 		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
+		{
 
 
-			if (player.altFunctionUse != 2)
+			if (player.altFunctionUse != 2) 
 			{
-				player.statMana += 5;
+				player.statMana += 4;
 				return false;
 			}
 			else
@@ -114,9 +114,9 @@ namespace Hyperion.Items.Weapons
 				return true;
 			}
 		}
-  
 
-        public override void AddRecipes()
+
+		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<MoonLordsHandle>(), 1)
