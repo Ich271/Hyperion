@@ -6,6 +6,7 @@ using System;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
+using Hyperion;
 
 namespace Hyperion.Items.Weapons
 {
@@ -53,57 +54,61 @@ namespace Hyperion.Items.Weapons
 			Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
 			Item.autoReuse = false;
 			Item.useAnimation = 5;
+		
 		}
 
 		
 		public override bool AltFunctionUse(Player player) { return true; }
 
-		public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
-		{
-			if (player.altFunctionUse == 2) mult += 190;
 
-		}
-
-		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-
-
-			if (player.altFunctionUse != 2) 
-			{
-				player.statMana += 6;
-				return false;
-			}
+        public override bool CanUseItem(Player player)
+        {
+			
+			if (player.altFunctionUse != 2)
+            {
+				Item.mana = 0;
+				Item.DamageType = DamageClass.Melee;
+				Item.shoot = ProjectileID.None;
+				return true;
+			} 
 			else
-			{
-				
-				SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/explode"));
+            {
+				Item.mana = 150;
+				Item.DamageType = DamageClass.Magic;
+				Item.shoot = ModContent.ProjectileType<Projectiles.Witherimpact>();
+				return true;
+			}
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+       	
+				SoundEngine.PlaySound(new SoundStyle("Hyperion/Sounds/Item/explode"));
 
-
-				Vector2 playerLoc = player.position;
+				//setting Up tp
+				Vector2 playerPos = player.position;
 				Vector2 curserWorld = Main.MouseWorld;
-				Vector2 PlayerToCurser = curserWorld - playerLoc;
+				Vector2 PlayerToCurser = curserWorld - playerPos;
 				Vector2 direction = PlayerToCurser.SafeNormalize(Vector2.UnitX);
 
+				//executing tp untill collision
 				for (int i = 0; i < 500; i++)
 				{
 					Vector2 distance = new(i, i);
-					Vector2 nextLocation = playerLoc + (direction * distance);
-
+					Vector2 nextLocation = playerPos + (direction * distance);
+					
+					
 					if (!Collision.SolidCollision(nextLocation, player.width, player.height)) player.position = nextLocation;
 					else break;
 					
 				}
 
-
-
-
-
+				//Wither Shield effect
 				if (!player.HasBuff(ModContent.BuffType<Buffs.WitherShield>()) && player.statLife != player.statLifeMax2 && player.altFunctionUse == 2)
 				{
 					player.AddBuff(ModContent.BuffType<Buffs.WitherShield>(), 300, false, true);
 					player.statLife += player.GetWeaponCrit(Item) * 2;
 					player.HealEffect(player.GetWeaponCrit(Item) * 2, true);
-					SoundEngine.PlaySound(SoundLoader.GetLegacySoundSlot(Mod, "Sounds/Item/WitherImpactSound"));
+					SoundEngine.PlaySound(new SoundStyle("Hyperion/Sounds/Item/WitherImpactSound"));
 					for (int i = 0; i < 50; i++)
 					{
 						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
@@ -111,19 +116,16 @@ namespace Hyperion.Items.Weapons
 						d.noGravity = true;
 					}
 				}
-				return true;
-			}
+
+			return true;
 		}
-
-
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<MoonLordsHandle>(), 1)
-				.AddIngredient(ItemID.FragmentNebula, 24)
-				.AddIngredient(ItemID.LunarBar, 24)
+				.AddRecipeGroup("Hyperion:WitherBlades")
+				.AddIngredient(ItemID.FragmentStardust, 24)
 				.AddTile(TileID.LunarCraftingStation)
-				.Register();
+				.Register();		
 		}
 	}
 }
